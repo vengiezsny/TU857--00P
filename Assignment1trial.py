@@ -3,7 +3,7 @@
 # 2. John Hoang (student ID: bj456).
 # 3. Jace (student ID: cb789).
 # 4. Cristian Brillantes
-# 5. 
+# 5. No one
 # Date: November 4, 2024.
 #
 # Game Expansion Explanation:
