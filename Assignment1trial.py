@@ -138,7 +138,7 @@ class CrimeScene:
         print("Clues found: ", self.clues)  # Print all the clues
 
 
-class SoundManager:
+class SoundManager:#needs assets for sound
     """Handles all game sound effects and background music.
     
     This class is responsible for loading, playing, and managing all audio
@@ -195,51 +195,60 @@ class SoundManager:
         except Exception as e:
             print(f"Warning: Could not play background music: {e}")
 
-class GraphicsManager:
+class GraphicsManager:#needs assets for the images
     """Handles all visual elements of the game.
     
     This class manages the game window, loads and displays images,
     and handles all graphical rendering operations.
     """
-    
     def __init__(self):
-        """Initialize pygame display and load images."""
         pygame.init()
         self.screen_width = 800
         self.screen_height = 600
         self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
-        pygame.display.set_caption("The Detective's Enigma")
+        pygame.display.set_caption("Your Game Title")
         
-        # Base directory for assets
-        self.base_dir = os.path.dirname(os.path.abspath(__file__))
+        # Dictionary to store scene images
+        self.scenes = {
+            'drawing_room': 'assets/drawing_room.png',
+            'library': 'assets/library.png',
+            'kitchen': 'assets/kitchen.png'
+            # Add more scenes as needed
+        }
         
-        # Dictionary to store all game images
-        self.images = {}
+        # Load and store scene images
+        self.scene_surfaces = {}
+        self.load_scenes()
         
-        try:
-            # Attempt to load image files
-            image_files = {
-                'drawing_room': 'drawing_room.png',
-                'kitchen': 'kitchen.png',
-                'library': 'library.png',
-                'front_door': 'front_door.png',
-                'suspect': 'suspect.png',
-                'witness': 'witness.png'
-            }
-            
-            for key, filename in image_files.items():
-                file_path = os.path.join(self.base_dir, 'assets', 'images', filename)
-                if os.path.exists(file_path):
-                    self.images[key] = pygame.image.load(file_path)
-                else:
-                    print(f"Warning: Image file not found: {filename}")
-                    # Create a default colored rectangle as placeholder
-                    surface = pygame.Surface((self.screen_width, self.screen_height))
-                    surface.fill((100, 100, 100))  # Gray color
-                    self.images[key] = surface
-                    
-        except Exception as e:
-            print(f"Warning: Error loading image files: {e}")
+    def load_scenes(self):
+        """Load all scene images into memory"""
+        for scene_name, scene_path in self.scenes.items():
+            try:
+                image = pygame.image.load(scene_path)
+                image = pygame.transform.scale(image, (self.screen_width, self.screen_height))
+                self.scene_surfaces[scene_name] = image
+            except pygame.error as e:
+                print(f"Error loading {scene_name}: {e}")
+                # Load a default/fallback image
+                self.scene_surfaces[scene_name] = self.create_fallback_surface()
+    
+    def create_fallback_surface(self):
+        """Create a fallback surface if image loading fails"""
+        surface = pygame.Surface((self.screen_width, self.screen_height))
+        surface.fill((100, 100, 100))  # Grey background
+        font = pygame.font.Font(None, 36)
+        text = font.render("Scene not found", True, (255, 255, 255))
+        text_rect = text.get_rect(center=(self.screen_width/2, self.screen_height/2))
+        surface.blit(text, text_rect)
+        return surface
+    
+    def display_scene(self, scene_name):
+        """Display the specified scene"""
+        if scene_name in self.scene_surfaces:
+            self.screen.blit(self.scene_surfaces[scene_name], (0, 0))
+            pygame.display.flip()
+        else:
+            print(f"Scene {scene_name} not found")
 
 class Game:
     """This class represents the overall mystery game."""
