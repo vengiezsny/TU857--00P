@@ -1,8 +1,8 @@
 # Members:
-# 1. Vengie Legaspi (student ID: c20366171).
-# 2. John Hoang (student ID: bj456).
-# 3. Jace (student ID: cb789).
-# 4. Cristian Brillantes
+# 1. Vengie Legaspi (student ID: C20366171).
+# 2. John Hoang (student ID: C22455366).
+# 3. Jacey  (student ID: cb789).
+# 4. Cristian Brillantes (student ID: C23482336).
 # 5. No one
 # Date: November 4, 2024.
 #
