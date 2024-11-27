@@ -3,7 +3,7 @@
 # 2. John Hoang (student ID: C22455366).
 # 3. Jace Janczak (student ID: C23493156 ).
 # 4. Cristian Brillantes (student ID: C23482336).
-# Date: November 25, 2024.
+# Date: November 27, 2024.
 #
 # Game Expansion Explanation:
 #
@@ -20,6 +20,10 @@
 #   challenge your critical thinking and problem-solving abilities. Solve them to 
 #   unlock essential information!
 #
+# **Continued Storyline:**
+# - New Storyline in continue_game
+# - Uses clues from **Exciting Mini-Games:**
+# - Can present evidence by pressing 'p'
 #
 # **Educational Puzzles:** Engage your mind with puzzles inspired by real-world 
 # detective work. These challenges are designed to sharpen your critical thinking 
@@ -69,6 +73,7 @@ class Game:
         self.__doors = ["Front door", "Library door", "Kitchen door"]  # List of doors to choose from
         self.__doors_checker = [False, False, False]  # Track which doors have been checked
         self.__clues = []  # List to store clues found during the game
+        self.__continue_game_route_checker = [False, False, False] # Track which route have been checked
         
         # Initialize mini-games available in the game
         self.__mini_games = [
@@ -123,7 +128,8 @@ class Game:
             # Prompt for game actions
             player_input = input(
                 "Press 'q' to quit, 'c' to continue, 'i' to interact, "
-                "'e' to examine clues, 'r' to review clues, 'm' to play mini-games, or 'd' to choose a door: ")
+                "'e' to examine clues, 'r' to review clues, 'm' to play mini-games, "
+                "'p' to present evidence, or 'd' to choose a door: ")
 
             self.__logger.log(f"Player input is {player_input}.")  # Log player input
 
@@ -159,6 +165,30 @@ class Game:
                     print(clues)  # Print found clues
                 else:
                     print("You have not found any clues yet.")  # No clues found message
+            elif player_input.lower() == "p":
+                print("You've gathered everyone in a room.")
+                print("You decide to present point the suspect to everyone.")
+                print(self.__crime_scene.review_clues())
+                print("Which evidence do you want to present?")
+                evidence = str(input("Enter the evidence name\n"))
+                if evidence == "Concrete Video Evidence": # If the Concrete Video Evidence was presented
+                    self.__logger.log("Concrete Video Evidence Presented")  # Log that the Concrete Video Evidence was presented
+                    print("As everyone watches the video evidence they turn to look who was responsible.")
+                    print("Everyone: SEAMUS!!!")
+                    print("Seamus sits quietly and stares at you.")
+                    print("You walk up to Seamus and handcuff him.")
+                    print("You call the police and let them handle the rest.")
+                    print("\n\nYou have won the game!! Congratulations.")
+                    print("Please run again if you want to play again.")
+                    log_file = input("Please provide a file name for the logs: \n")  # Get log file name
+                    self.__logger.save_logs_to_file(log_file)  # Save logs to file
+                    self.__running = False  # Stop the game loop
+                else: # If anything else that isn't Concrete Video Evidence was presented
+                    self.__logger.log(evidence + "Presented")  # Log that evidence was presented
+                    print("You decided to present the evidence: " + evidence)
+                    print("Everyone stares at you and feel disappointed.")
+                    print("They walk away.")
+                    print("You continue on your investigation.")
             elif player_input.lower() == "m":
                 self.play_mini_games()  # Play mini-games
             else:
@@ -173,7 +203,173 @@ class Game:
         print("Put your detective skills to the test and unveil the truth!")
 
     def continue_game(self):
-        print("You continue your investigation, determined to solve the mystery...")  # Continue investigation message
+        print("You've searched all around the mansion to find any clues left around.")
+        print("Currently, you have three options to choose from")
+        print("What will you choose to do?:")
+        player_choice = int(input("1. Outside the mansion | 2. The attic | 3. Map\n"))
+
+        # Player chooses to go outside the mansion
+        if player_choice == 1:
+            self.__logger.log("Player chose to go outside the mansion") # Log that the player chose to go outside the mansion
+            print("You walk outside the mansion.")
+            print("You see something in the distance and walk towards it as it catches your attention.")
+            print("As you walk towards the thing, you can make out the shape of a shed")
+            print("You try to open it but it seems like it is locked.")
+            print("Maybe try using a key?")
+            key_choice = int(input("1. Use small key | 2. Leave\n"))
+            if key_choice == 1:
+                # Search for a small key.
+                key_found = False
+                key_clue = "Found A small key from Word Scramble"  # The clue that is needed to unlock the shed.
+                for clue in self.__crime_scene.review_clues():
+                    if key_clue in clue:
+                        key_found = True
+                        break
+                if key_found:
+                    self.__logger.log("Small Key used") # Log that the player used the small key
+                    # Proceed with unlocking the shed and the subsequent storyline
+                    print("You found the small key and use it to unlock the shed.")
+                    print("Inside the shed, you don't see anything out of the ordinary.")
+                    print("As you squint your eyes looking for something, you notice an inconsistent pattern on the floor.")
+                    print("You stomp on the suspicious looking pattern and it suddenly breaks off.")
+                    print("You see a staircase leading to a basement under the shed.")
+                    staircase_choice = int(input("1. Take the stairs | 2. Leave\n"))
+                    if staircase_choice == 1:
+                        if not self.__continue_game_route_checker[0]:
+                            self.__logger.log("Player walks down the staircase") # Log that the player takes the stairs
+                            print("You take the stairs and walk down the staircase.")
+                            print("As you walk down the staircase, you see a small light.")
+                            print("The light is coming from a small room.")
+                            print("As you walk into the room, you see a candle, the source of the light, on the desk.")
+                            print("There is a small notebook on the desk.")
+                            print("You look around and open the very first page.")
+                            print("Mr. Smith's notebook...")
+                            print("As you try to read the notebook, you hear a loud noise.")
+                            print("You quickly take Mr. Smith's notebook and leave the basement.")
+                            # Add Mr. Smith's notebook to the clues list
+                            self.__crime_scene.add_clue("Mr. Smith's notebook")
+                            # Marks the basement as checked.
+                            self.__continue_game_route_checker[0] = True
+                        else:
+                            # Log that the player has already walked down the staircase
+                            self.__logger.log("Player has already walked down the staircase")
+                            print("You've already walked down the staircase.")
+                    if staircase_choice == 2:
+                        self.__logger.log("Player has left the shed") # Log that the player has left the shed
+                        print("You leave the shed and continue on your investigation.")
+                else:
+                    self.__logger.log("Player doesn't have a small key") # Log that the player doesn't have a small key
+                    print("You don't have the small key to unlock the shed yet.")
+                    print("Maybe try completing one of the mini-games?")
+            if key_choice == 2:
+                self.__logger.log("Player decides to leave the shed") # Log that the player decides to leave the shed
+                # If the player decides to leave the shed
+                print("You decide to check later.")
+            if key_choice != 1 and key_choice != 2:
+                # If player inputs incorrect key choice
+                print("Invalid choice.")
+
+        # Player chooses to check the attic
+        if player_choice == 2:
+            self.__logger.log("Player chooses to check the attic") # Log that the Player chooses to check the attic
+            print("You walk to the top floor of the mansion")
+            print("You see a trap door on the roof of top floor in the mansion.")
+            print("Luckily there is a ladder right next to you.")
+            print("You setup the ladder and walk up.")
+            print("You hit the trap door forcefully and it opens.")
+            print("Inside the attic there is a bed and a closet.")
+            print("You look inside the closet and found a strange contraption")
+            print("It looks like a decoder.")
+            print("Maybe try using it on the mysterious note.")
+            note_choice = int(input("1. Use decoder | 2. Leave\n"))
+            if note_choice == 1:
+                # Search for a mysterious note
+                note_found = False
+                note_clue = "Found A mysterious note from Memory Game"  # The clue that is needed to use the decoder.
+                for clue in self.__crime_scene.review_clues():
+                    if note_clue in clue:
+                        note_found = True
+                        break
+                if note_found:
+                    self.__logger.log("Player has used the decoder") # Log that the player has used the decoder
+                    # Proceed with using the decoder on the mysterious note
+                    if not self.__continue_game_route_checker[1]:
+                        print("You use the decoder to decode the mysterious note.")
+                        print("You discover a secret 4 number code on the note.")
+                        print("It looks like there's nothing else here.")
+                        print("You leave the attic and continue on your investigation.")
+                        # Adds the code to the clues list
+                        self.__crime_scene.add_clue("Mysterious Note Code: 6392")
+                        # Marks the attic as checked
+                        self.__continue_game_route_checker[1] = True
+                    else:
+                        # Log that the player has already used the decoder
+                        self.__logger.log("Player has already used the decoder")
+                        print("You've already used the decoder on the mysterious note.")
+                else:
+                    # If the player hasn't found the mysterious note
+                    print("You don't have the mysterious note to use the decoder yet.")
+                    print("Maybe try completing one of the mini-games?")
+            if note_choice == 2:
+                # Logs that the player decides to not use the decoder
+                self.__logger.log("Player decides to not use the decoder")
+                # If the player decides to not use the decoder
+                print("You decide to use the decoder later.")
+                print("You leave the attic and continue on your investigation.")
+            if note_choice != 1 and note_choice != 2:
+                # If the player inputs an invalid option
+                print("Invalid choice.")
+
+        # Players chooses to use the hidden map
+        if player_choice == 3:
+            # Search for the hidden map.
+            map_found = False
+            map_clue = "Found A hidden map from Riddle Challenge"  # The clue that is needed to use the hidden map.
+            for clue in self.__crime_scene.review_clues():
+                if map_clue in clue:
+                    map_found = True
+                    break
+            if map_found:
+                if not self.__continue_game_route_checker[2]:
+                    # Logs that the Player decides to use the hidden map
+                    self.__logger.log("Player decides to use the hidden map")
+                    # Proceed with using the hidden map
+                    print("You use the hidden map that you recently found.")
+                    print("It seems the x on the map is inside the mansion.")
+                    print("You've walked around the mansion and finally found the location of the x.")
+                    print("It leads to a really old room in the mansion.")
+                    print("It's unlocked and you walk right in.")
+                    print("There seems to be a chest at the end of the room.")
+                    print("You approach the chest and try to open it... It doesn't budge")
+                    print("There seems to be a number lock on the chest.")
+                    print("Maybe you know the code?")
+                    code_input = int(input("Enter the code..\n"))
+                    if code_input == 6392:
+                        # Logs that the Player inputs the correct code
+                        self.__logger.log("Player inputs the correct code")
+                        # If the player inputs the correct code
+                        print("You open the chest and find a camera.")
+                        print("You look through the footage and find a picture of the missing diamond necklace.")
+                        print("You continue to scroll through the camera and found a video.")
+                        print("The video shows a certain suspect with the diamond necklace.")
+                        print("You've found the person who was responsible!!")
+                        print("You leave the room happily and continue on your investigation.")
+                        # Add the Concrete Video Evidence to the clues list
+                        self.__crime_scene.add_clue("Concrete Video Evidence")
+                        # Marks the map as checked
+                        self.__continue_game_route_checker[2] = True
+                    else:
+                        # If the player inputs the incorrect code
+                        print("You don't know the code.")
+                else:
+                    # Logs that the Player has already used the hidden map
+                    self.__logger.log("Player has already used the hidden map")
+                    print("You've already used the hidden map.")
+            else:
+                # If the player doesn't have a hidden map
+                print("You don't have a hidden map to use.")
+                print("Maybe try completing one of the mini-games?")
+
 
     def interact_with_characters(self):
         print("You decide to interact with the characters in the room.")  # Interaction prompt
