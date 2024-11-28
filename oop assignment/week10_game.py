@@ -1,9 +1,9 @@
 # Members:
 # 1. Vengie Legaspi (student ID: c20366171).
 # 2. John Hoang (student ID: bj456).
-# 3. Jace (student ID: cb789).
-# 4. Cristian Brillantes
-# 5. No one
+# 3. Jacey Janczak (student ID: C23493156).
+# 4. Cristian Brillantes 
+# 5. No one. ඞ
 # Date: November 4, 2024.
 #
 # Game Expansion Explanation:
