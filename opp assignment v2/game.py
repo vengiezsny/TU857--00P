@@ -1,32 +1,36 @@
 # Authors (Members):
 # 1. Vengie Legaspi (student ID: C20366171).
 # 2. John Hoang (student ID: C22455366).
-# 3. Jace Janczak (student ID: C23493156 ).
+# 3. Jace Janczak (student ID: C23493156).
 # 4. Cristian Brillantes (student ID: C23482336).
-# Date: November 27, 2024.
+# Date: November 29, 2024.
 #
 # Game Expansion Explanation:
 #
-# Welcome to the thrilling expansion of our mystery game, "The Detective's Enigma!" 
-# The Code Wizards group has conjured up a series of exhilarating new features that 
-# will elevate your detective experience to new heights. 
+# Welcome to the thrilling expansion of our mystery game, "The Detective's Enigma!"
+# The Code Wizards group has conjured up a series of exhilarating new features that
+# will elevate your detective experience to new heights.
 #
 # **Exciting Mini-Games:**
-# - **Word Scramble:** Test your linguistic skills by unscrambling words related to 
+# - **Word Scramble:** Test your linguistic skills by unscrambling words related to
 #   the mystery. Each correct guess brings you closer to uncovering the truth!
-# - **Memory Game:** Sharpen your memory as you memorize sequences of numbers that 
+# - **Memory Game:** Sharpen your memory as you memorize sequences of numbers that
 #   hold vital clues. Can you recall them under pressure?
-# - **Riddle Challenge:** Engage your mind with thought-provoking riddles that will 
-#   challenge your critical thinking and problem-solving abilities. Solve them to 
+# - **Riddle Challenge:** Engage your mind with thought-provoking riddles that will
+#   challenge your critical thinking and problem-solving abilities. Solve them to
 #   unlock essential information!
 #
 # **Continued Storyline:**
 # - New Storyline in continue_game
-# - Uses clues from **Exciting Mini-Games:**
+# - Uses clues from Exciting Mini-Games
 # - Can present evidence by pressing 'p'
 #
-# **Educational Puzzles:** Engage your mind with puzzles inspired by real-world 
-# detective work. These challenges are designed to sharpen your critical thinking 
+# **Music and Sound Effects**
+# - Exciting and suspense main game music
+# - Immersing Sound Effects after every option
+#
+# **Educational Puzzles:** Engage your mind with puzzles inspired by real-world
+# detective work. These challenges are designed to sharpen your critical thinking
 # skills while you unravel the mysteries that lie ahead.
 #
 # **File Structure:**
@@ -34,15 +38,15 @@
 # - `puzzles.py`: A treasure trove of educational puzzles to challenge your intellect.
 #
 # **How to Play:**
-# - To embark on your journey in "The Detective's Enigma," simply run the 
-#   `main.py` file. 
+# - To embark on your journey in "The Detective's Enigma," simply run the
+#   `main.py` file.
 # - Ensure that the `crime_scene.py`, `characters.py`, and `final_mini_games.py` ,'logger.py','main.py','game.py'
-#   modules are in the same directory to unlock the full potential of your 
+#   modules are in the same directory to unlock the full potential of your
 #   detective adventure.
 #
 # **Get Ready for an Adventure!**
-# Prepare yourself for an immersive experience filled with twists, turns, 
-# and brain-teasing challenges. Are you ready to don the detective's hat 
+# Prepare yourself for an immersive experience filled with twists, turns,
+# and brain-teasing challenges. Are you ready to don the detective's hat
 # and solve the case? The truth awaits!
 #
 # Important Note:
@@ -50,10 +54,13 @@
 ################################################################################
 
 
+
 from characters import Suspect, Witness, NPC  # Import character classes for the game: Suspect, Witness, and NPC (Non-Playable Characters)
 from logger import Loggable  # Import the Loggable class for logging game events and errors
 from crime_scene import CrimeScene  # Import the CrimeScene class to manage the crime scene and clues
 from final_mini_games_VL import WordScramble, MemoryGame, RiddleGame  # Import mini-game classes for additional gameplay features
+import music_and_sound
+import time
 
 class Game:
     def __init__(self):
@@ -112,7 +119,6 @@ class Game:
 
     def update(self):
         self.__logger.log("I'm updating")  # Log that the update method is called
-
         if not self.__game_started:  # Check if the game has started
             player_input = input("Press 'q' to quit or 's' to start: ")  # Get player input
             if player_input.lower() == "q":
@@ -125,6 +131,8 @@ class Game:
             else:
                 raise ValueError("Incorrect user entry.")  # Raise error for invalid input
         else:
+            # Play main music for the game
+            music_and_sound.main_music('sound/main_music.wav')
             # Prompt for game actions
             player_input = input(
                 "Press 'q' to quit, 'c' to continue, 'i' to interact, "
@@ -138,6 +146,7 @@ class Game:
                 self.__logger.save_logs_to_file(log_file)  # Save logs to file
                 self.__running = False  # Stop the game loop
             elif player_input.lower() == "c":
+                music_and_sound.sound_effect('sound/page_sound.wav') # Plays a page flipping sound
                 self.continue_game()  # Continue the game
             elif player_input.lower() == "i":
                 try:
@@ -171,7 +180,14 @@ class Game:
                 print(self.__crime_scene.review_clues())
                 print("Which evidence do you want to present?")
                 evidence = str(input("Enter the evidence name\n"))
+                # A for loop to check if the user as inputted evidence in the clues list for error checking
+                evidence_found = False
+                for clue in self.__crime_scene.review_clues():
+                    if evidence in clue:
+                        evidence_found = True
+                        break
                 if evidence == "Concrete Video Evidence": # If the Concrete Video Evidence was presented
+                    music_and_sound.sound_effect('sound/victory_sound.wav') # Plays the sound of victory
                     self.__logger.log("Concrete Video Evidence Presented")  # Log that the Concrete Video Evidence was presented
                     print("As everyone watches the video evidence they turn to look who was responsible.")
                     print("Everyone: SEAMUS!!!")
@@ -183,12 +199,14 @@ class Game:
                     log_file = input("Please provide a file name for the logs: \n")  # Get log file name
                     self.__logger.save_logs_to_file(log_file)  # Save logs to file
                     self.__running = False  # Stop the game loop
-                else: # If anything else that isn't Concrete Video Evidence was presented
+                elif evidence_found: # If anything else that isn't Concrete Video Evidence was presented
                     self.__logger.log(evidence + "Presented")  # Log that evidence was presented
                     print("You decided to present the evidence: " + evidence)
                     print("Everyone stares at you and feel disappointed.")
                     print("They walk away.")
                     print("You continue on your investigation.")
+                else:
+                    print("Invalid evidence presented")
             elif player_input.lower() == "m":
                 self.play_mini_games()  # Play mini-games
             else:
@@ -203,6 +221,7 @@ class Game:
         print("Put your detective skills to the test and unveil the truth!")
 
     def continue_game(self):
+        music_and_sound.sound_effect('sound/clock_sound.wav') # Plays a choice sound effect
         print("You've searched all around the mansion to find any clues left around.")
         print("Currently, you have three options to choose from")
         print("What will you choose to do?:")
@@ -210,6 +229,7 @@ class Game:
 
         # Player chooses to go outside the mansion
         if player_choice == 1:
+            music_and_sound.sound_effect('sound/walk_sound.wav') # Plays a walk sound
             self.__logger.log("Player chose to go outside the mansion") # Log that the player chose to go outside the mansion
             print("You walk outside the mansion.")
             print("You see something in the distance and walk towards it as it catches your attention.")
@@ -226,6 +246,7 @@ class Game:
                         key_found = True
                         break
                 if key_found:
+                    music_and_sound.sound_effect('sound/key_sound.wav') # Plays a key unlock sound
                     self.__logger.log("Small Key used") # Log that the player used the small key
                     # Proceed with unlocking the shed and the subsequent storyline
                     print("You found the small key and use it to unlock the shed.")
@@ -236,6 +257,8 @@ class Game:
                     staircase_choice = int(input("1. Take the stairs | 2. Leave\n"))
                     if staircase_choice == 1:
                         if not self.__continue_game_route_checker[0]:
+                            music_and_sound.sound_effect('sound/walk_sound.wav') # Plays a walk sound
+                            time.sleep(1)
                             self.__logger.log("Player walks down the staircase") # Log that the player takes the stairs
                             print("You take the stairs and walk down the staircase.")
                             print("As you walk down the staircase, you see a small light.")
@@ -265,12 +288,10 @@ class Game:
                 self.__logger.log("Player decides to leave the shed") # Log that the player decides to leave the shed
                 # If the player decides to leave the shed
                 print("You decide to check later.")
-            if key_choice != 1 and key_choice != 2:
-                # If player inputs incorrect key choice
-                print("Invalid choice.")
 
         # Player chooses to check the attic
         if player_choice == 2:
+            music_and_sound.sound_effect('sound/walk_sound.wav') # Plays a walk sound
             self.__logger.log("Player chooses to check the attic") # Log that the Player chooses to check the attic
             print("You walk to the top floor of the mansion")
             print("You see a trap door on the roof of top floor in the mansion.")
@@ -294,6 +315,8 @@ class Game:
                     self.__logger.log("Player has used the decoder") # Log that the player has used the decoder
                     # Proceed with using the decoder on the mysterious note
                     if not self.__continue_game_route_checker[1]:
+                        music_and_sound.sound_effect('sound/decoder_sound.wav')  # Plays a futuristic sound
+                        time.sleep(1)
                         print("You use the decoder to decode the mysterious note.")
                         print("You discover a secret 4 number code on the note.")
                         print("It looks like there's nothing else here.")
@@ -316,9 +339,6 @@ class Game:
                 # If the player decides to not use the decoder
                 print("You decide to use the decoder later.")
                 print("You leave the attic and continue on your investigation.")
-            if note_choice != 1 and note_choice != 2:
-                # If the player inputs an invalid option
-                print("Invalid choice.")
 
         # Players chooses to use the hidden map
         if player_choice == 3:
@@ -330,6 +350,7 @@ class Game:
                     map_found = True
                     break
             if map_found:
+                music_and_sound.sound_effect('sound/map_sound.wav') # Plays a paper crumbling sound
                 if not self.__continue_game_route_checker[2]:
                     # Logs that the Player decides to use the hidden map
                     self.__logger.log("Player decides to use the hidden map")
@@ -345,6 +366,8 @@ class Game:
                     print("Maybe you know the code?")
                     code_input = int(input("Enter the code..\n"))
                     if code_input == 6392:
+                        music_and_sound.sound_effect('sound/unlock_sound.wav') # Plays an unlock sound
+                        time.sleep(1)
                         # Logs that the Player inputs the correct code
                         self.__logger.log("Player inputs the correct code")
                         # If the player inputs the correct code
@@ -501,3 +524,5 @@ class Game:
                 print("Invalid game choice!")  # Invalid choice message
         except ValueError:
             print("Please enter a valid number!")  # Handle non-integer input
+
+
