@@ -1,1 +1,1 @@
-print("yuh")
+#Puzzles and Riddles
