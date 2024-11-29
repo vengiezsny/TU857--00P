@@ -1,6 +1,5 @@
 # Python file for music
 # Allows the ability to implement music into the mystery game
-import threading
 import winsound
 
 def main_music(music_file):
