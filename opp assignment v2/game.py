@@ -171,23 +171,23 @@ class Game:
                     self.__error_logger.log(f"Unexpected error found for player input:\n{e}")
                     print("Unexpected error from player input. We continue playing...")
             elif player_input.lower() == "r":
-                clues = self.__crime_scene.review_clues()  # Review clues
-                if clues:
-                    print(clues)  # Print found clues
+                if len(self.__crime_scene.__clues) > 0:
+                    self.__crime_scene.print_clues() # Print found clues in a numbered list.
                 else:
                     print("You have not found any clues yet.")  # No clues found message
             elif player_input.lower() == "p":
                 print("You've gathered everyone in a room.")
                 print("You decide to present point the suspect to everyone.")
-                print(self.__crime_scene.review_clues())
+                print(self.__crime_scene.print_clues())
                 print("Which evidence do you want to present?")
-                evidence = str(input("Enter the evidence name\n"))
+                select = int(input("Enter the evidence's number\n"))
                 # A for loop to check if the user as inputted evidence in the clues list for error checking
                 evidence_found = False
-                for clue in self.__crime_scene.review_clues():
-                    if evidence in clue:
-                        evidence_found = True
-                        break
+                if select in range(1, len(self.__crime_scene.review_clues())):
+                    evidence = self.__crime_scene.review_clues()[select - 1]
+                    evidence_found = True
+                else:
+                    evidence = "None"
                 if evidence == "Concrete Video Evidence": # If the Concrete Video Evidence was presented
                     music_and_sound.sound_effect('sound/victory_sound.wav') # Plays the sound of victory
                     self.__logger.log("Concrete Video Evidence Presented")  # Log that the Concrete Video Evidence was presented
@@ -198,8 +198,9 @@ class Game:
                     print("You call the police and let them handle the rest.")
                     print("\n\nYou have won the game!! Congratulations.")
                     print("Please run again if you want to play again.")
-                    log_file = input("Please provide a file name for the logs: \n")  # Get log file name
-                    self.__logger.save_logs_to_file(log_file)  # Save logs to file
+                    log_file = input("Optionally provide a file name to dump logs (Enter to ignore): \n")  # Get log file name
+                    if not log_file == "":
+                        self.__logger.save_logs_to_file(log_file)  # Save logs to file
                     self.__running = False  # Stop the game loop
                 elif evidence_found: # If anything else that isn't Concrete Video Evidence was presented
                     self.__logger.log(evidence + "Presented")  # Log that evidence was presented
@@ -582,8 +583,3 @@ class Game:
 
             else:
                 print("Invalid option. Please enter 1 or 2.")
-
-
-
-
-
