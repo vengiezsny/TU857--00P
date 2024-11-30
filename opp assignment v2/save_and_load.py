@@ -15,12 +15,12 @@ class Data:
 
     def save(self):
         dir = "saves/" + str(self.__save_slot) + ".txt"
-        with open(dir) as file:
+        with open(dir, 'wb') as file:
             pickle.dump(self.__data, file)
 
     def load(self):
         dir = "saves/" + str(self.__save_slot) + ".txt"
-        with open(dir) as file:
+        with open(dir, 'rb') as file:
             self.__data = pickle.load(file)
 
     def return_data(self):
