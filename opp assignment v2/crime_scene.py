@@ -19,5 +19,5 @@ class CrimeScene:
         return self.__clues
 
     def print_clues(self):
-        for i in range(len(self.__clues) - 1):
+        for i in range(len(self.__clues)):
             print(f"{i + 1}) {self.__clues[i]}")
