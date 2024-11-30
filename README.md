@@ -28,47 +28,6 @@ Coding Standards: Code quality and readability are important. Ensure that your c
 
 Documentation and Presentation: Each group should document their code. The code header must contain an overview of the specific expansions tackled by the group, see example below. The group prepares a brief game play presentation (5-10 minutes) to showcase their expanded game to the lab TA. Each member of the group will have to answer a question that the TA asks you during this presentation. These questions may include insights into your design choices, coding practices, and challenges you encountered during the expansion.
 
-An appropriate code file header for this assignment could be:
-################################################################################
-# CMPU 2016 OOP – TU 857 - Semester 1 Assignment.
-# Group: The Code Wizards.
-# Members:
-#   1. Alice Smith (student ID: as123).
-#   2. Bob Johnson (student ID: bj456).
-#   3. Charlie Brown (student ID: cb789).
-#   4. Diana White (student ID: dw012).
-#   5. Ethan Davis (student ID: ed567).
-# Date: November 4, 2024.
-#
-# Game Expansion Explanation:
-#
-# In this expansion of our mystery game, "The Detective's Enigma," The Code
-# Wizards group introduces exciting new features. We've implemented a
-# comprehensive system of achievements and leaderboards that tracks players'
-# progress and allows them to compete for the top detective spot.
-# Additionally, we've incorporated educational elements that enhance the
-# gaming experience with puzzles related to real-world detective work,
-# helping players develop critical thinking skills.
-#
-# File Structure:
-# - main_game.py: The main game script.
-# - achievements.py: Module for handling achievements.
-# - leaderboards.py: Module for managing player rankings.
-# - puzzles.py: Module containing educational puzzle content.
-#
-# Running the Game:
-# - To play "The Detective's Enigma" with our exciting expansions, run the
-#   "main_game.py" file.
-# - Ensure that the "achievements.py," "leaderboards.py," and "puzzles.py"
-#   modules are in the same directory for full functionality.
-#
-# Enjoy the game and have fun becoming the ultimate detective!
-#
-# Important Note:
-# Please keep this header unaltered in all submitted files.
-################################################################################
-
-
 Submission: You should submit your code files as one zip file as a group submission in the appropriate group submission area on brightspace. Naming convention of the zip file is group_name.zip, for example TheCodeWizards.zip. 
 
 Evaluation: Your group's work will be assessed based on the quality of your code, the creativity of your game expansion, your answers during the presentation, and your adherence to ethical standards. This assignment is marked out of 100. The value of this assignment is 60% of the CA grade for semester 1. 
