@@ -125,8 +125,8 @@ class Game:
             player_input = input("Press 'q' to quit or 's' to start: ")  # Get player input
             if player_input.lower() == "q":
                 self.__running = False  # Stop the game loop
-                log_file = input("Please provide a file name for the logs: \n")  # Get log file name
-                self.__logger.save_logs_to_file(log_file)  # Save logs to file
+                log_file = input("Optionally provide a file name to save logs to (Enter to ignore): \n")  # Get log file name
+                if not log_file == "": self.__logger.save_logs_to_file(log_file)  # Save logs to file
             elif player_input.lower() == "s":
                 self.__game_started = True  # Set game started flag
                 self.start_game()  # Start the game
