@@ -181,10 +181,11 @@ class Game:
                 print(self.__crime_scene.print_clues())
                 print("Which evidence do you want to present?")
                 select = int(input("Enter the evidence's number\n"))
+                select -= 1
                 # A for loop to check if the user as inputted evidence in the clues list for error checking
                 evidence_found = False
-                if select in range(1, len(self.__crime_scene.review_clues())):
-                    evidence = self.__crime_scene.review_clues()[select - 1]
+                if select in range(0, len(self.__crime_scene.review_clues())):
+                    evidence = self.__crime_scene.review_clues()[select]
                     evidence_found = True
                 else:
                     evidence = "None"
