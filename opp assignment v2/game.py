@@ -172,10 +172,7 @@ class Game:
                     self.__error_logger.log(f"Unexpected error found for player input:\n{e}")
                     print("Unexpected error from player input. We continue playing...")
             elif player_input.lower() == "r":
-                if len(self.__crime_scene.__clues) > 0:
-                    self.__crime_scene.print_clues() # Print found clues in a numbered list.
-                else:
-                    print("You have not found any clues yet.")  # No clues found message
+                self.__crime_scene.print_clues() # Print found clues in a numbered list.
             elif player_input.lower() == "p":
                 print("You've gathered everyone in a room.")
                 print("You move your hand through your pouch...")
@@ -585,3 +582,4 @@ class Game:
 
             else:
                 print("Invalid option. Please enter 1 or 2.")
+
