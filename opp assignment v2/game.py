@@ -144,7 +144,7 @@ class Game:
             self.__logger.log(f"Player input is {player_input}.")  # Log player input
 
             if player_input.lower() == "q":
-                log_file = input("Optionally provide a file name to dump logs (Enter to ignore): \n")  # Get log file name
+                log_file = input("Optionally provide a file name to save logs (Enter to ignore): \n")  # Get log file name
                 if not log_file == "":
                     self.__logger.save_logs_to_file(log_file)  # Save logs to file
                 self.__running = False  # Stop the game loop
@@ -200,7 +200,7 @@ class Game:
                     print("You call the police and let them handle the rest.")
                     print("\n\nYou have won the game!! Congratulations.")
                     print("Please run again if you want to play again.")
-                    log_file = input("Optionally provide a file name to dump logs (Enter to ignore): \n")  # Get log file name
+                    log_file = input("Optionally provide a file name to save logs (Enter to ignore): \n")  # Get log file name
                     if not log_file == "":
                         self.__logger.save_logs_to_file(log_file)  # Save logs to file
                     self.__running = False  # Stop the game loop
