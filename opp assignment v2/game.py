@@ -144,8 +144,9 @@ class Game:
             self.__logger.log(f"Player input is {player_input}.")  # Log player input
 
             if player_input.lower() == "q":
-                log_file = input("Please provide a file name for the logs: \n")  # Get log file name
-                self.__logger.save_logs_to_file(log_file)  # Save logs to file
+                log_file = input("Optionally provide a file name to dump logs (Enter to ignore): \n")  # Get log file name
+                if not log_file == "":
+                    self.__logger.save_logs_to_file(log_file)  # Save logs to file
                 self.__running = False  # Stop the game loop
             elif player_input.lower() == "c":
                 music_and_sound.sound_effect('sound/page_sound.wav') # Plays a page flipping sound
