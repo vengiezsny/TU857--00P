@@ -177,7 +177,7 @@ class Game:
                     print("You have not found any clues yet.")  # No clues found message
             elif player_input.lower() == "p":
                 print("You've gathered everyone in a room.")
-                print("You decide to present point the suspect to everyone.")
+                print("You move your hand through your pouch...")
                 print(self.__crime_scene.print_clues())
                 print("Which evidence do you want to present?")
                 select = int(input("Enter the evidence's number\n"))
