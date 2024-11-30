@@ -1,4 +1,4 @@
-# Import the required pythn module
+# Import the required python module
 import random
 
 from abc import ABC, abstractmethod
@@ -90,7 +90,7 @@ class Puzzles(GamePR):
     # A class for puzzles containing a hangman game and a number sequence puzzle
 
     def __init__(self):
-        super().__init__("Puzzles", "a box of letters")
+        super().__init__("Puzzles", "box of letters")
 
     def hangmanGame(self): # hangman game logic
         word_list = ["detective", "mystery", "necklace", "diamond", "secrets", "evidence"]
@@ -136,18 +136,23 @@ class Puzzles(GamePR):
         answer = 64 # 32x2 = 64
 
         attempts = 3 # user has 3 attempts to answer
-        while attempts > 0: # loop as long as there is attempts
-            user_answer = input(f"You have {attempts} left, enter your answer: ").strip
+        while attempts > 0:  # Loop as long as there are attempts remaining
+            user_answer = input(f"You have {attempts} left, enter your answer: ").strip()
 
-            if user_answer == answer: # check if the users answer is the answer
-                print("Correct. You solved the puzzle and will now be granted an award.")
-                return True # user has solved the puzzle
-            else:
-                attempts = attempts - 1
-                print(f"Incorrect. You have {attempts} left.")
+            # check if the input is a valid integer
+            try:
+                user_answer = int(user_answer)  # convert user input to integer
+                if user_answer == answer:  # compare the integer answer
+                    print("Correct. You solved the puzzle and will now be granted an award.")
+                    return True  # user has solved the puzzle correctly
+                else:
+                    attempts -= 1  # deduct one attempt for an incorrect answer
+                    print(f"Incorrect. You have {attempts} left.")
+            except ValueError:
+                print("Please enter a valid number.")  # handle non-integer input gracefully
 
         print(f"You failed. The correct answer was {answer}")
-        return False # user has failed to solve the puzzle
+        return False  # user failed to solve the puzzle
 
     def play(self):
         # Play both the sequence game and the hangman game
@@ -165,5 +170,5 @@ class Puzzles(GamePR):
             print("You did not complete the Sequence Puzzle")
 
         # both games completed
-        print("\nCongratulations, you have completes the riddles and the puzzles. You have been granted your rewards.")
+        print("\nCongratulations, you have completed the riddles and the puzzles. You have been granted your rewards.")
         return self._reward

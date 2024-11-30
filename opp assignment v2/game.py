@@ -2,7 +2,7 @@
 # 1. Vengie Legaspi (student ID: C20366171).
 # 2. John Hoang (student ID: C22455366).
 # 3. Jace Janczak (student ID: C23493156).
-# 4. Cristian Brillantes (student ID: C23482336).
+# 4. Christian Brillantes (student ID: C23482336).
 # Date: November 29, 2024.
 #
 # Game Expansion Explanation:
@@ -40,8 +40,9 @@
 # **How to Play:**
 # - To embark on your journey in "The Detective's Enigma," simply run the
 #   `main.py` file.
-# - Ensure that the `crime_scene.py`, `characters.py`, and `final_mini_games.py` ,'logger.py','main.py','game.py'
-#   modules are in the same directory to unlock the full potential of your
+# - Ensure that the `crime_scene.py`, `characters.py`, and `final_mini_games.py`,
+#   'logger.py', 'puzzles_and_riddles.py', 'main.py','game.py'.
+#   Ensure all modules are in the same directory to unlock the full potential of your
 #   detective adventure.
 #
 # **Get Ready for an Adventure!**
@@ -59,6 +60,7 @@ from characters import Suspect, Witness, NPC  # Import character classes for the
 from logger import Loggable  # Import the Loggable class for logging game events and errors
 from crime_scene import CrimeScene  # Import the CrimeScene class to manage the crime scene and clues
 from final_mini_games_VL import WordScramble, MemoryGame, RiddleGame  # Import mini-game classes for additional gameplay features
+from puzzles_and_riddles import Riddles, Puzzles # Import Riddles and Puzzles classes for extra features and storyline
 import music_and_sound
 import time
 
@@ -77,10 +79,10 @@ class Game:
         self.__suspect = Suspect("Mr. Smith", "I was in the library all evening.", "Confirmed by the butler.")
         self.__witness = Witness("Ms. Parker", "I saw someone near the window at the time of the incident.",
                                "Suspicious figure in dark clothing.")
-        self.__doors = ["Front door", "Library door", "Kitchen door"]  # List of doors to choose from
-        self.__doors_checker = [False, False, False]  # Track which doors have been checked
+        self.__doors = ["Front door", "Library door", "Kitchen door", "Basement Door"]  # List of doors to choose from
+        self.__doors_checker = [False, False, False, False]  # Track which doors have been checked
         self.__clues = []  # List to store clues found during the game
-        self.__continue_game_route_checker = [False, False, False] # Track which route have been checked
+        self.__continue_game_route_checker = [False, False, False, False] # Track which route have been checked
         
         # Initialize mini-games available in the game
         self.__mini_games = [
@@ -498,6 +500,15 @@ class Game:
                 else:
                     print("You've looked in the kitchen already.")  # Already checked message
                     self.__logger.log("The kitchen had been chosen before. No access.")  # Log access denial
+            elif door_choice == 4: # Basement door interaction
+                if not self.__doors_checker[3]:
+                    print("You head down to the basement where you are met with challenges that have long awaited your presence.")
+                    self.__logger.log("The basement has been investigated.")
+                    self.attempt_puzzles_and_riddles() # Call method to attempt puzzles and riddles
+                    self.__doors_checker[3] = True # Mark door as checked
+                else:
+                    print("You've explored the basement already.")  # Already checked message
+                    self.__logger.log("The basement had been chosen before. No access.")  # Log access denial
         else:
             raise ValueError(f"Invalid door choice: {door_choice}")  # Raise error for invalid door choice
 
@@ -524,5 +535,55 @@ class Game:
                 print("Invalid game choice!")  # Invalid choice message
         except ValueError:
             print("Please enter a valid number!")  # Handle non-integer input
+
+    def attempt_puzzles_and_riddles(self):
+        # Let user attempt puzzles and riddles
+        print("Attempt the challenges in this basement where you will be rewarded clues upon completion.")
+
+        # create instances
+        riddles_game = Riddles()
+        puzzles_game = Puzzles()
+
+        while True:
+            print("\nChoose an option:")
+            print("1. Attempt challenges")
+            print("2. Leave the Basement")
+
+            choice = input("Enter 1 or 2: ").strip()
+
+            if choice == "1":
+                print("\nChoose a challenge:")
+                print("1. Riddles")
+                print("2. Puzzles")
+
+                chosen_challenge = input("Enter 1 or 2: ").strip()
+
+                if chosen_challenge == "1":
+                    print("\nRiddles Challenge has begun.")
+                    reward = riddles_game.play()
+                    if reward: # if there is a reward present, grant award
+                        print(f"You have acquired a {reward}")
+                        self.__crime_scene.add_clue(reward)
+                    else:
+                        print("Try again later.")
+
+                elif chosen_challenge == "2":
+                    print("\nPuzzles Challenge has begun.")
+                    reward = puzzles_game.play()
+                    if reward:  # if there is a reward present, grant award
+                        print(f"You have acquired a {reward}")
+                        self.__crime_scene.add_clue(reward)
+                    else:
+                        print("Try again later.")
+
+            elif choice == "2":
+                print("You leave the basement and return to the drawing room.")
+                break
+
+            else:
+                print("Invalid option. Please enter 1 or 2.")
+
+
+
 
 
