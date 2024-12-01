@@ -1,7 +1,7 @@
 class CrimeScene:
     def __init__(self, location):
         self.location = location
-        self.__clues = []
+        self.clues = []
         self.__investigated = False
 
     @property
@@ -13,11 +13,11 @@ class CrimeScene:
         self.__investigated = value
 
     def add_clue(self, clue):
-        self.__clues.append(clue)
+        self.clues.append(clue)
 
     def review_clues(self):
-        return self.__clues
+        return self.clues
 
     def print_clues(self):
-        for i in range(len(self.__clues)):
-            print(f"{i + 1}) {self.__clues[i]}")
+        for i in range(len(self.clues)):
+            print(f"{i + 1}) {self.clues[i]}")
